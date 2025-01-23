@@ -1,7 +1,7 @@
 # CyberScape
 Cyberscape_35
 Introduction
-The scope of your project could involve identifying patterns of social media usage that lead to productivity loss, examining user engagement trends, and evaluating the impact of various factors like time spent, device type, and addiction levels on productivity and satisfaction. Insights from this analysis could help design interventions for better time management or guide platform developers to foster healthier usage patterns.
+The scope of Our project is to focus on identifying patterns of social media usage that lead to productivity loss, analyzing user engagement trends, and evaluating the impact of factors such as time spent, device type, and addiction levels on productivity and satisfaction. The insights from this study aim to inform the development of interventions for better time management and guide platform developers in promoting healthier usage patterns.
 
 Project Type
 Data analysis using Streamlit
