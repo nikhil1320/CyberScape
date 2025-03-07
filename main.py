@@ -3,8 +3,7 @@ import pandas as pd
 import altair as alt
 
 # Load dataset
-file_path = "/mnt/data/Time-Wasters on Social Media.csv"
-df = pd.read_csv(file_path)
+df = pd.read_csv('Time-Wasters on Social Media.csv')
 
 # Convert necessary columns to appropriate data types
 df['Watch Time'] = pd.to_datetime(df['Watch Time'], errors='coerce').dt.hour  # Convert to numeric hours
