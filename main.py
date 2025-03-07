@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
+import altair as alt
 
-
+# Load dataset
 df = pd.read_csv('Time-Wasters on Social Media.csv')
-
 
 # Title and Introduction
 st.title("User Engagement Dashboard")
@@ -15,59 +15,88 @@ selected_gender = st.sidebar.selectbox("Select Gender", df['Gender'].unique())
 age_range = st.sidebar.slider("Select Age Range", 0, 100, (20, 50))
 platform_filter = st.sidebar.multiselect("Select Platform", options=df.Platform.unique(), default=df.Platform.unique())
 
-
 # Filter data based on selections
-filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1]))&(df['Platform'].isin(platform_filter))]
+filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1])) & (df['Platform'].isin(platform_filter))]
 
+# Key Performance Indicators (KPIs)
 st.subheader("Key Performance Indicators")
 st.metric("Total Time Spent (hours)", int(filtered_df['Total Time Spent'].sum()))
 st.metric("Average Productivity Loss", round(filtered_df['ProductivityLoss'].mean(), 2))
 st.metric("Average Addiction Level", round(filtered_df['Addiction Level'].mean(), 2))
 
-
-# 1. User Demographics Distribution
+# User Demographics Distribution
 st.subheader("User Demographics")
-gender_counts = filtered_df['Gender'].value_counts()
-st.bar_chart(gender_counts)
+gender_counts = filtered_df['Gender'].value_counts().reset_index()
+gender_chart = alt.Chart(gender_counts).mark_bar().encode(
+    x=alt.X('index:N', title='Gender'),
+    y=alt.Y('Gender:Q', title='Count'),
+    color='index:N'
+)
+st.altair_chart(gender_chart, use_container_width=True)
 
-# 2. Income vs. Debt
+# Income vs. Debt
 st.subheader("Income vs. Debt")
-income_debt_data = filtered_df[['Income', 'Debt']]
-st.write("Income vs. Debt Scatter Plot")
-st.scatter_chart(income_debt_data)
+st.scatter_chart(filtered_df[['Income', 'Debt']], use_container_width=True)
 
-# 3. Engagement by Platform
+# Engagement by Platform
 st.subheader("Engagement by Platform")
 platform_engagement = df.groupby('Platform')['Engagement'].sum().reset_index()
-st.bar_chart(platform_engagement.set_index('Platform')['Engagement'])
+platform_chart = alt.Chart(platform_engagement).mark_bar().encode(
+    x=alt.X('Platform:N', title='Platform'),
+    y=alt.Y('Engagement:Q', title='Total Engagement')
+)
+st.altair_chart(platform_chart, use_container_width=True)
 
-# 4. Average Time Spent on Videos by Category
+# Average Time Spent on Videos by Category
 st.subheader("Average Time Spent on Videos by Category")
 avg_time = df.groupby('Video Category')['Time Spent On Video'].mean().reset_index()
-st.line_chart(avg_time.set_index('Video Category')['Time Spent On Video'])
+time_chart = alt.Chart(avg_time).mark_line(point=True).encode(
+    x=alt.X('Video Category:N', title='Video Category'),
+    y=alt.Y('Time Spent On Video:Q', title='Avg Time Spent (minutes)')
+)
+st.altair_chart(time_chart, use_container_width=True)
 
-# 5. Average Satisfaction Score
+# Average Satisfaction Score
 st.subheader("Average Satisfaction Score by Profession")
 avg_satisfaction = df.groupby('Profession')['Satisfaction'].mean().reset_index()
-st.bar_chart(avg_satisfaction.set_index('Profession')['Satisfaction'])
+satisfaction_chart = alt.Chart(avg_satisfaction).mark_bar().encode(
+    x=alt.X('Profession:N', title='Profession'),
+    y=alt.Y('Satisfaction:Q', title='Avg Satisfaction Score')
+)
+st.altair_chart(satisfaction_chart, use_container_width=True)
 
-# 6. Debt to Income Ratio
+# Debt to Income Ratio
 st.subheader("Debt to Income Ratio Distribution")
 df['Debt to Income Ratio'] = df['Debt'] / df['Income'].replace(0, 1)  # Avoid division by zero
-st.line_chart(df['Debt to Income Ratio'])
+debt_chart = alt.Chart(df).mark_line().encode(
+    x=alt.X('index:Q', title='Users'),
+    y=alt.Y('Debt to Income Ratio:Q', title='Debt to Income Ratio')
+)
+st.altair_chart(debt_chart, use_container_width=True)
 
-# 7. Video Watch Time by Device Type
+# Video Watch Time by Device Type
 st.subheader("Watch Time by Device Type")
 device_watch_time = df.groupby('DeviceType')['Watch Time'].sum().reset_index()
-st.bar_chart(device_watch_time.set_index('DeviceType')['Watch Time'])
+device_chart = alt.Chart(device_watch_time).mark_bar().encode(
+    x=alt.X('DeviceType:N', title='Device Type'),
+    y=alt.Y('Watch Time:Q', title='Total Watch Time (minutes)')
+)
+st.altair_chart(device_chart, use_container_width=True)
 
-# 8. Scroll Rate by Video Length
+# Scroll Rate by Video Length
 st.subheader("Scroll Rate by Video Length")
-scroll_rate_length = df[['Video Length', 'Scroll Rate']].groupby('Video Length').mean().reset_index()
-st.line_chart(scroll_rate_length.set_index('Video Length')['Scroll Rate'])
+scroll_rate_length = df.groupby('Video Length')['Scroll Rate'].mean().reset_index()
+scroll_chart = alt.Chart(scroll_rate_length).mark_line(point=True).encode(
+    x=alt.X('Video Length:Q', title='Video Length (minutes)'),
+    y=alt.Y('Scroll Rate:Q', title='Avg Scroll Rate')
+)
+st.altair_chart(scroll_chart, use_container_width=True)
 
-# 9. Engagement Over Time
+# Engagement Over Time
 st.subheader("Engagement Over Time")
 engagement_over_time = df.groupby('Platform')['Engagement'].mean().reset_index()
-st.line_chart(engagement_over_time.set_index('Platform')['Engagement'])
-
+time_engagement_chart = alt.Chart(engagement_over_time).mark_line(point=True).encode(
+    x=alt.X('Platform:N', title='Platform'),
+    y=alt.Y('Engagement:Q', title='Avg Engagement')
+)
+st.altair_chart(time_engagement_chart, use_container_width=True)
