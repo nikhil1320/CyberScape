@@ -1,3 +1,135 @@
-streamlit
-pandas
-altair
+  a l t a i r = = 5 . 4 . 1 
+ 
+ a t t r s = = 2 4 . 3 . 0 
+ 
+ b l i n k e r = = 1 . 8 . 2 
+ 
+ b s 4 = = 0 . 0 . 2 
+ 
+ c a c h e t o o l s = = 5 . 5 . 0 
+ 
+ c e r t i f i = = 2 0 2 4 . 8 . 3 0 
+ 
+ c h a r s e t - n o r m a l i z e r = = 3 . 4 . 0 
+ 
+ c l i c k = = 8 . 1 . 7 
+ 
+ c o l o r a m a = = 0 . 4 . 6 
+ 
+ d i s t l i b = = 0 . 3 . 9 
+ 
+ f i l e l o c k = = 3 . 1 6 . 1 
+ 
+ g i t d b = = 4 . 0 . 1 1 
+ 
+ G i t P y t h o n = = 3 . 1 . 4 3 
+ 
+ g o o g l e - a p i - c o r e = = 2 . 2 4 . 1 
+ 
+ g o o g l e - a p i - p y t h o n - c l i e n t = = 2 . 1 6 1 . 0 
+ 
+ g o o g l e - a u t h = = 2 . 3 8 . 0 
+ 
+ g o o g l e - a u t h - h t t p l i b 2 = = 0 . 2 . 0 
+ 
+ g o o g l e - a u t h - o a u t h l i b = = 1 . 2 . 1 
+ 
+ g o o g l e a p i s - c o m m o n - p r o t o s = = 1 . 6 8 . 0 
+ 
+ h 1 1 = = 0 . 1 4 . 0 
+ 
+ h t t p l i b 2 = = 0 . 2 2 . 0 
+ 
+ i d n a = = 3 . 1 0 
+ 
+ J i n j a 2 = = 3 . 1 . 4 
+ 
+ j s o n s c h e m a = = 4 . 2 3 . 0 
+ 
+ j s o n s c h e m a - s p e c i f i c a t i o n s = = 2 0 2 4 . 1 0 . 1 
+ 
+ m a r k d o w n - i t - p y = = 3 . 0 . 0 
+ 
+ M a r k u p S a f e = = 3 . 0 . 2 
+ 
+ m d u r l = = 0 . 1 . 2 
+ 
+ m y s q l - c o n n e c t o r - p y t h o n = = 9 . 2 . 0 
+ 
+ n a r w h a l s = = 1 . 1 3 . 2 
+ 
+ n u m p y = = 2 . 1 . 3 
+ 
+ o a u t h l i b = = 3 . 2 . 2 
+ 
+ o u t c o m e = = 1 . 3 . 0 . p o s t 0 
+ 
+ p a c k a g i n g = = 2 4 . 1 
+ 
+ p a n d a s = = 2 . 2 . 3 
+ 
+ p i l l o w = = 1 0 . 4 . 0 
+ 
+ p l a t f o r m d i r s = = 4 . 3 . 6 
+ 
+ p r o t o - p l u s = = 1 . 2 6 . 0 
+ 
+ p r o t o b u f = = 5 . 2 8 . 3 
+ 
+ p y a r r o w = = 1 8 . 0 . 0 
+ 
+ p y d e c k = = 0 . 9 . 1 
+ 
+ P y g m e n t s = = 2 . 1 8 . 0 
+ 
+ P y M y S Q L = = 1 . 1 . 1 
+ 
+ p y t h o n - d a t e u t i l = = 2 . 9 . 0 . p o s t 0 
+ 
+ p y t z = = 2 0 2 4 . 2 
+ 
+ r e f e r e n c i n g = = 0 . 3 5 . 1 
+ 
+ r e q u e s t s = = 2 . 3 2 . 3 
+ 
+ r e q u e s t s - o a u t h l i b = = 2 . 0 . 0 
+ 
+ r i c h = = 1 3 . 9 . 4 
+ 
+ r p d s - p y = = 0 . 2 0 . 1 
+ 
+ r s a = = 4 . 9 
+ 
+ s e l e n i u m = = 4 . 2 7 . 1 
+ 
+ s i x = = 1 . 1 6 . 0 
+ 
+ s m m a p = = 5 . 0 . 1 
+ 
+ s t r e a m l i t = = 1 . 3 9 . 0 
+ 
+ t e n a c i t y = = 9 . 0 . 0 
+ 
+ t o m l = = 0 . 1 0 . 2 
+ 
+ t o r n a d o = = 6 . 4 . 1 
+ 
+ t r i o = = 0 . 2 8 . 0 
+ 
+ t r i o - w e b s o c k e t = = 0 . 1 1 . 1 
+ 
+ t y p i n g _ e x t e n s i o n s = = 4 . 1 2 . 2 
+ 
+ t z d a t a = = 2 0 2 4 . 2 
+ 
+ u r i t e m p l a t e = = 4 . 1 . 1 
+ 
+ u r l l i b 3 = = 2 . 2 . 3 
+ 
+ v i r t u a l e n v = = 2 0 . 2 7 . 1 
+ 
+ w a t c h d o g = = 5 . 0 . 3 
+ 
+ w s p r o t o = = 1 . 2 . 0 
+ 
+ 
