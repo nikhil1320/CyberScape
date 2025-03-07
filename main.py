@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
-
+# Load Data
 df = pd.read_csv('Time-Wasters on Social Media.csv')
-
 
 # Title and Introduction
 st.title("User Engagement Dashboard")
@@ -15,9 +15,8 @@ selected_gender = st.sidebar.selectbox("Select Gender", df['Gender'].unique())
 age_range = st.sidebar.slider("Select Age Range", 0, 100, (20, 50))
 platform_filter = st.sidebar.multiselect("Select Platform", options=df.Platform.unique(), default=df.Platform.unique())
 
-
 # Filter data based on selections
-filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1]))&(df['Platform'].isin(platform_filter))]
+filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1])) & (df['Platform'].isin(platform_filter))]
 
 st.subheader("Key Performance Indicators")
 st.metric("Total Time Spent (hours)", int(filtered_df['Total Time Spent'].sum()))
@@ -27,53 +26,52 @@ st.metric("Average Addiction Level", round(filtered_df['Addiction Level'].mean()
 # 1. User Demographics Distribution
 st.subheader("User Demographics")
 gender_counts = filtered_df['Gender'].value_counts()
-st.bar_chart(gender_counts)
-st.write("**X-axis:** Gender | **Y-axis:** Count")
+fig = px.bar(gender_counts, x=gender_counts.index, y=gender_counts.values, labels={'x': 'Gender', 'y': 'Count'}, title='Gender Distribution')
+st.plotly_chart(fig)
 
 # 2. Income vs. Debt
 st.subheader("Income vs. Debt")
-income_debt_data = filtered_df[['Income', 'Debt']]
-st.scatter_chart(income_debt_data)
-st.write("**X-axis:** Income | **Y-axis:** Debt")
+fig = px.scatter(filtered_df, x='Income', y='Debt', labels={'x': 'Income', 'y': 'Debt'}, title='Income vs. Debt')
+st.plotly_chart(fig)
 
 # 3. Engagement by Platform
 st.subheader("Engagement by Platform")
 platform_engagement = df.groupby('Platform')['Engagement'].sum().reset_index()
-st.bar_chart(platform_engagement.set_index('Platform')['Engagement'])
-st.write("**X-axis:** Platform | **Y-axis:** Engagement")
+fig = px.bar(platform_engagement, x='Platform', y='Engagement', labels={'x': 'Platform', 'y': 'Engagement'}, title='Engagement by Platform')
+st.plotly_chart(fig)
 
 # 4. Average Time Spent on Videos by Category
 st.subheader("Average Time Spent on Videos by Category")
 avg_time = df.groupby('Video Category')['Time Spent On Video'].mean().reset_index()
-st.line_chart(avg_time.set_index('Video Category')['Time Spent On Video'])
-st.write("**X-axis:** Video Category | **Y-axis:** Time Spent On Video")
+fig = px.line(avg_time, x='Video Category', y='Time Spent On Video', labels={'x': 'Video Category', 'y': 'Time Spent On Video'}, title='Time Spent on Videos')
+st.plotly_chart(fig)
 
 # 5. Average Satisfaction Score
 st.subheader("Average Satisfaction Score by Profession")
 avg_satisfaction = df.groupby('Profession')['Satisfaction'].mean().reset_index()
-st.bar_chart(avg_satisfaction.set_index('Profession')['Satisfaction'])
-st.write("**X-axis:** Profession | **Y-axis:** Satisfaction")
+fig = px.bar(avg_satisfaction, x='Profession', y='Satisfaction', labels={'x': 'Profession', 'y': 'Satisfaction'}, title='Satisfaction by Profession')
+st.plotly_chart(fig)
 
 # 6. Debt to Income Ratio
 st.subheader("Debt to Income Ratio Distribution")
-df['Debt to Income Ratio'] = df['Debt'] / df['Income'].replace(0, 1)  # Avoid division by zero
-st.line_chart(df['Debt to Income Ratio'])
-st.write("**X-axis:** Index | **Y-axis:** Debt to Income Ratio")
+df['Debt to Income Ratio'] = df['Debt'] / df['Income'].replace(0, 1)
+fig = px.line(df, x=df.index, y='Debt to Income Ratio', labels={'x': 'Index', 'y': 'Debt to Income Ratio'}, title='Debt to Income Ratio Distribution')
+st.plotly_chart(fig)
 
 # 7. Video Watch Time by Device Type
 st.subheader("Watch Time by Device Type")
 device_watch_time = df.groupby('DeviceType')['Watch Time'].sum().reset_index()
-st.bar_chart(device_watch_time.set_index('DeviceType')['Watch Time'])
-st.write("**X-axis:** Device Type | **Y-axis:** Watch Time")
+fig = px.bar(device_watch_time, x='DeviceType', y='Watch Time', labels={'x': 'Device Type', 'y': 'Watch Time'}, title='Watch Time by Device Type')
+st.plotly_chart(fig)
 
 # 8. Scroll Rate by Video Length
 st.subheader("Scroll Rate by Video Length")
-scroll_rate_length = df[['Video Length', 'Scroll Rate']].groupby('Video Length').mean().reset_index()
-st.line_chart(scroll_rate_length.set_index('Video Length')['Scroll Rate'])
-st.write("**X-axis:** Video Length | **Y-axis:** Scroll Rate")
+scroll_rate_length = df.groupby('Video Length')['Scroll Rate'].mean().reset_index()
+fig = px.line(scroll_rate_length, x='Video Length', y='Scroll Rate', labels={'x': 'Video Length', 'y': 'Scroll Rate'}, title='Scroll Rate by Video Length')
+st.plotly_chart(fig)
 
 # 9. Engagement Over Time
 st.subheader("Engagement Over Time")
 engagement_over_time = df.groupby('Platform')['Engagement'].mean().reset_index()
-st.line_chart(engagement_over_time.set_index('Platform')['Engagement'])
-st.write("**X-axis:** Platform | **Y-axis:** Engagement")
+fig = px.line(engagement_over_time, x='Platform', y='Engagement', labels={'x': 'Platform', 'y': 'Engagement'}, title='Engagement Over Time')
+st.plotly_chart(fig)
