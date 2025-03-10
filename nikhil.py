@@ -5,7 +5,7 @@ import seaborn as sns
 
 # Load Data
 
-df = pd.read_csv('D:/Masai/Project/CyberScape/updated/Time-Wasters on Social Media.csv')
+df = pd.read_csv('Time-Wasters on Social Media.csv')
 
 # Title and Introduction
 st.title("User Engagement Dashboard")
