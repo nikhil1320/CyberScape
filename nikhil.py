@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load Data
-
 df = pd.read_csv('Time-Wasters on Social Media.csv')
 
 # Title and Introduction
@@ -25,26 +24,29 @@ gender_options = ['All'] + list(df['Gender'].unique())
 selected_gender = st.sidebar.selectbox("Select Gender", gender_options)
 
 # Age Range Filter
-age_range = st.sidebar.slider("Select Age Range", 0, 100, (20, 50))
-
+age_range = st.sidebar.slider("Select Age Range", min(df['Age']), max(df['Age']), (20, 50))
 
 # Platform Filter (with Select All Option)
-platform_options = ['All'] + list(df['Platform'].unique())  # Add "All" to the platform filter
-platform_filter = st.sidebar.multiselect("Select Platform", options=platform_options, default=df.Platform.unique())
+platform_options = ['All'] + list(df['Platform'].unique())
+platform_filter = st.sidebar.multiselect("Select Platform", options=platform_options, default=platform_options)
 
+# Apply Filters
+filtered_df = df.copy()
 
-# Filter data based on selections
-filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1]))&(df['Platform'].isin(platform_filter))]
-
-# Apply Filter
+# Gender Filter
 if selected_gender != 'All':
-    filtered_df = df[df['Gender'] == selected_gender]
-else:
-    filtered_df = df.copy()
+    filtered_df = filtered_df[filtered_df['Gender'] == selected_gender]
+
+# Age Filter (Fixed)
+filtered_df = filtered_df[filtered_df['Age'].between(age_range[0], age_range[1])]
+
+# Platform Filter
+if 'All' not in platform_filter:
+    filtered_df = filtered_df[filtered_df['Platform'].isin(platform_filter)]
 
 # 1. **Most Watched Videos by Time of Day**
 st.subheader("Most Watched Videos by Time of Day")
-fig, ax = plt.subplots(figsize=(8, 5))  # Define fig, ax
+fig, ax = plt.subplots(figsize=(8, 5))
 ax.bar(df['Watch Time'], df['Video ID'], color='skyblue')
 ax.set_title('Most Watched Videos by Time of Day')
 ax.set_xlabel('Time of Day')
@@ -114,10 +116,3 @@ ax.set_title('Satisfaction Rate')
 ax.set_xlabel('Satisfaction Level')
 ax.set_ylabel('Number of Views')
 st.pyplot(fig)
-
-
-
-
-
-
-
