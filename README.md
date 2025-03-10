@@ -7,7 +7,7 @@ Project Type
 Data analysis using Streamlit
 
 Deplolyed App
-Streamlit :- https://cyberscape035-fwqiqufmhydal6wxegduqg.streamlit.app
+Streamlit :- https://cyberscape-l9wxmzy549ibpfrefzcmhc.streamlit.app/
 
 Video Walkthrough of the project
 [https://youtu.be/K-MRuum-1MA?si=6INXjX_ETKcC81lD https://youtu.be/QncWBo7C5tY?si=3K3z3pA9vaMTOQtK](https://www.youtube.com/watch?v=K-MRuum-1MA)
