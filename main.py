@@ -9,69 +9,122 @@ df = pd.read_csv('Time-Wasters on Social Media.csv')
 st.title("User Engagement Dashboard")
 st.write("Explore insights and KPIs from user engagement data.")
 
+# Key Metrics at the top
+st.subheader("Key Metrics")
+st.metric("Total Time Spent (hours)", int(df['Total Time Spent'].sum()))
+st.metric("Total Engagement", int(df['Engagement'].sum()))
+st.metric("Average Satisfaction", round(df['Satisfaction'].mean(), 2))
+
 # Sidebar for Filters
 st.sidebar.header("Filters")
-selected_gender = st.sidebar.selectbox("Select Gender", df['Gender'].unique())
+
+# Gender Filter (with Select All Option)
+gender_options = ['All'] + list(df['Gender'].unique())  # Add "All" to the gender filter
+selected_gender = st.sidebar.selectbox("Select Gender", gender_options)
+
+# Age Range Filter
 age_range = st.sidebar.slider("Select Age Range", 0, 100, (20, 50))
-platform_filter = st.sidebar.multiselect("Select Platform", options=df.Platform.unique(), default=df.Platform.unique())
+
+# Platform Filter (with Select All Option)
+platform_options = ['All'] + list(df['Platform'].unique())  # Add "All" to the platform filter
+platform_filter = st.sidebar.multiselect("Select Platform", options=platform_options, default=df.Platform.unique())
 
 # Filter data based on selections
-filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1])) & (df['Platform'].isin(platform_filter))]
+if selected_gender != 'All':
+    filtered_df = df[(df['Gender'] == selected_gender)]
+else:
+    filtered_df = df.copy()
 
-st.subheader("Key Performance Indicators")
-st.metric("Total Time Spent (hours)", int(filtered_df['Total Time Spent'].sum()))
-st.metric("Average Productivity Loss", round(filtered_df['ProductivityLoss'].mean(), 2))
-st.metric("Average Addiction Level", round(filtered_df['Addiction Level'].mean(), 2))
+filtered_df = filtered_df[(filtered_df['Age'].between(age_range[0], age_range[1]))]
 
-# 1. User Demographics Distribution
-st.subheader("User Demographics")
-gender_counts = filtered_df['Gender'].value_counts()
-fig = px.bar(gender_counts, x=gender_counts.index, y=gender_counts.values, labels={'x': 'Gender', 'y': 'Count'}, title='Gender Distribution')
-st.plotly_chart(fig)
+if 'All' not in platform_filter:
+    filtered_df = filtered_df[filtered_df['Platform'].isin(platform_filter)]
 
-# 2. Income vs. Debt
-st.subheader("Income vs. Debt")
-fig = px.scatter(filtered_df, x='Income', y='Debt', labels={'x': 'Income', 'y': 'Debt'}, title='Income vs. Debt')
-st.plotly_chart(fig)
+# 1. Most Watched at Different Times
+st.subheader("Most Watched at Different Times")
+time_watched = filtered_df.groupby('Watch Time')['Video ID'].count().reset_index()
 
-# 3. Engagement by Platform
-st.subheader("Engagement by Platform")
-platform_engagement = df.groupby('Platform')['Engagement'].sum().reset_index()
-fig = px.bar(platform_engagement, x='Platform', y='Engagement', labels={'x': 'Platform', 'y': 'Engagement'}, title='Engagement by Platform')
-st.plotly_chart(fig)
+fig, ax = plt.subplots()
+ax.bar(time_watched['Watch Time'], time_watched['Video ID'], color='skyblue')
+ax.set_title('Most Watched Videos by Time of Day')
+ax.set_xlabel('Time of Day')
+ax.set_ylabel('Number of Views')
 
-# 4. Average Time Spent on Videos by Category
-st.subheader("Average Time Spent on Videos by Category")
-avg_time = df.groupby('Video Category')['Time Spent On Video'].mean().reset_index()
-fig = px.line(avg_time, x='Video Category', y='Time Spent On Video', labels={'x': 'Video Category', 'y': 'Time Spent On Video'}, title='Time Spent on Videos')
-st.plotly_chart(fig)
+# Adjust the x-axis labels to fit properly
+plt.xticks(rotation=45, ha='right')  # Rotate the labels and align them to the right for better readability
+st.pyplot(fig)
 
-# 5. Average Satisfaction Score
-st.subheader("Average Satisfaction Score by Profession")
-avg_satisfaction = df.groupby('Profession')['Satisfaction'].mean().reset_index()
-fig = px.bar(avg_satisfaction, x='Profession', y='Satisfaction', labels={'x': 'Profession', 'y': 'Satisfaction'}, title='Satisfaction by Profession')
-st.plotly_chart(fig)
 
-# 6. Debt to Income Ratio
-st.subheader("Debt to Income Ratio Distribution")
-df['Debt to Income Ratio'] = df['Debt'] / df['Income'].replace(0, 1)
-fig = px.line(df, x=df.index, y='Debt to Income Ratio', labels={'x': 'Index', 'y': 'Debt to Income Ratio'}, title='Debt to Income Ratio Distribution')
-st.plotly_chart(fig)
+# 2. Platform with Most Engagement
+st.subheader("Platform with Most Engagement")
+platform_engagement = filtered_df.groupby('Platform')['Engagement'].sum().reset_index()
 
-# 7. Video Watch Time by Device Type
-st.subheader("Watch Time by Device Type")
-device_watch_time = df.groupby('DeviceType')['Watch Time'].sum().reset_index()
-fig = px.bar(device_watch_time, x='DeviceType', y='Watch Time', labels={'x': 'Device Type', 'y': 'Watch Time'}, title='Watch Time by Device Type')
-st.plotly_chart(fig)
+fig, ax = plt.subplots()
+ax.bar(platform_engagement['Platform'], platform_engagement['Engagement'], color='green')
+ax.set_title('Platform with Most Engagement')
+ax.set_xlabel('Platform')
+ax.set_ylabel('Total Engagement')
+plt.xticks(rotation=45)
+st.pyplot(fig)
 
-# 8. Scroll Rate by Video Length
-st.subheader("Scroll Rate by Video Length")
-scroll_rate_length = df.groupby('Video Length')['Scroll Rate'].mean().reset_index()
-fig = px.line(scroll_rate_length, x='Video Length', y='Scroll Rate', labels={'x': 'Video Length', 'y': 'Scroll Rate'}, title='Scroll Rate by Video Length')
-st.plotly_chart(fig)
+# 3. Video Lengths (Short vs Long Videos)
+st.subheader("Short vs Long Videos")
+# Classify videos into short (<=10 minutes) and long (>10 minutes)
+filtered_df['Video Length Category'] = filtered_df['Video Length'].apply(lambda x: 'Short Video' if x <= 10 else 'Long Video')
 
-# 9. Engagement Over Time
-st.subheader("Engagement Over Time")
-engagement_over_time = df.groupby('Platform')['Engagement'].mean().reset_index()
-fig = px.line(engagement_over_time, x='Platform', y='Engagement', labels={'x': 'Platform', 'y': 'Engagement'}, title='Engagement Over Time')
-st.plotly_chart(fig)
+video_length = filtered_df.groupby('Video Length Category')['Video ID'].count().reset_index()
+
+fig, ax = plt.subplots()
+ax.bar(video_length['Video Length Category'], video_length['Video ID'], color='purple')
+ax.set_title('Short vs Long Videos')
+ax.set_xlabel('Video Length Category')
+ax.set_ylabel('Number of Views')
+st.pyplot(fig)
+
+# 4. Satisfaction by Profession
+st.subheader("Satisfaction by Profession")
+satisfaction_by_profession = filtered_df.groupby('Profession')['Satisfaction'].mean().reset_index()
+
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.barplot(x='Satisfaction', y='Profession', data=satisfaction_by_profession, ax=ax, palette='coolwarm')
+ax.set_title('Satisfaction by Profession')
+ax.set_xlabel('Average Satisfaction')
+ax.set_ylabel('Profession')
+st.pyplot(fig)
+
+# 5. Engagement by Location (Bar Chart)
+st.subheader("Engagement by Location")
+
+# Calculate the total engagement by location
+location_engagement = filtered_df.groupby('Location').agg({'Engagement': 'sum'}).reset_index()
+
+# Create a bar chart for engagement by location
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.bar(location_engagement['Location'], location_engagement['Engagement'], color='orange')
+ax.set_title('Engagement by Location')
+ax.set_xlabel('Location')
+ax.set_ylabel('Total Engagement')
+plt.xticks(rotation=45)
+st.pyplot(fig)
+
+# 6. Number of Sessions
+st.subheader("Number of Sessions")
+sessions_count = filtered_df.groupby('Number of Sessions')['Video ID'].count().reset_index()
+
+fig, ax = plt.subplots()
+ax.plot(sessions_count['Number of Sessions'], sessions_count['Video ID'], marker='o', color='blue')
+ax.set_title('Sessions vs Video Views')
+ax.set_xlabel('Number of Sessions')
+ax.set_ylabel('Number of Views')
+st.pyplot(fig)
+
+# 7. Satisfaction Rate
+st.subheader("Satisfaction Rate")
+satisfaction = filtered_df.groupby('Satisfaction')['Video ID'].count().reset_index()
+
+fig, ax = plt.subplots()
+sns.barplot(x='Satisfaction', y='Video ID', data=satisfaction, ax=ax, palette='coolwarm')
+ax.set_title('Satisfaction Rate')
+ax.set_xlabel('Satisfaction Level')
+ax.set_ylabel('Number of Views')
+st.pyplot(fig)
