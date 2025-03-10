@@ -11,10 +11,16 @@ st.title("User Engagement Dashboard")
 st.write("Explore insights and KPIs from user engagement data.")
 
 # Key Metrics at the top
+# Key Metrics at the top
 st.subheader("Key Metrics")
-st.metric("Total Time Spent (hours)", int(df['Total Time Spent'].sum()))
-st.metric("Total Engagement", int(df['Engagement'].sum()))
-st.metric("Average Satisfaction", round(df['Satisfaction'].mean(), 2))
+col1, col2, col3 = st.columns(3)  # Create three columns
+with col1:
+    st.metric("Total Time Spent (hours)", int(df['Total Time Spent'].sum()))
+with col2:
+    st.metric("Total Engagement", int(df['Engagement'].sum()))
+with col3:
+    st.metric("Average Satisfaction", round(df['Satisfaction'].mean(), 2))
+
 
 # Sidebar for Filters
 st.sidebar.header("Filters")
