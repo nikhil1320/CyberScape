@@ -27,6 +27,9 @@ selected_gender = st.sidebar.selectbox("Select Gender", gender_options)
 # Age Range Filter
 age_range = st.sidebar.slider("Select Age Range", 0, 100, (20, 50))
 
+# Filter data based on selections
+filtered_df = df[(df['Gender'] == selected_gender) & (df['Age'].between(age_range[0], age_range[1]))&(df['Platform'].isin(platform_filter))]
+
 # Platform Filter (with Select All Option)
 platform_options = ['All'] + list(df['Platform'].unique())  # Add "All" to the platform filter
 platform_filter = st.sidebar.multiselect("Select Platform", options=platform_options, default=df.Platform.unique())
